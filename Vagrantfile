@@ -3,7 +3,9 @@
 # Source : https://github.com/commercialhaskell/stack/blob/master/etc/vagrant/centos-7-x86_64/Vagrantfile
 Vagrant.configure(2) do |config|
   config.vm.box = "bento/centos-7.1"
-  #config.vm.synced_folder "../../..", "/vagrant", type: "rsync", rsync__exclude: [".stack_work/", "_release/"]
+  config.vm.synced_folder "D:/Apps/.vagrant.d", "/host/.vagrant.d"
+  config.vm.synced_folder "D:/Apps/.docker", "/host/.docker"
+  config.vm.synced_folder ".", "/host/project"
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "2048"
   end
@@ -17,7 +19,7 @@ Vagrant.configure(2) do |config|
       yum -y install stack
     fi
     if ! which cabal; then
-      pushd /vagrant
+      pushd /host/project
       stack --install-ghc install cabal-install
       cp `stack exec which cabal` /usr/local/bin/cabal
       popd
