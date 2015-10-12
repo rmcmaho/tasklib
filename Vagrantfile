@@ -12,11 +12,24 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", run: "always", inline: <<-SHELL
     set -xe
     export PATH=/usr/local/bin:$PATH
+    yum -y update
     yum -y install epel-release
     yum -y install perl make automake gcc gmp-devel zlib-devel tar which git python-boto deltarpm python-deltarpm rpm-build rpm-sign ncurses-devel
     if ! [[ -f /usr/local/bin/stack ]]; then
       curl -sSL https://s3.amazonaws.com/download.fpcomplete.com/centos/7/fpco.repo >/etc/yum.repos.d/fpco.repo
       yum -y install stack
+    fi
+    if ! which docker; then
+      cat >/etc/yum.repos.d/docker.repo <<-EOF
+[dockerrepo]
+name=Docker Repository
+baseurl=https://yum.dockerproject.org/repo/main/centos/7
+enabled=1
+gpgcheck=1
+gpgkey=https://yum.dockerproject.org/gpg
+EOF
+      yum -y install docker-engine
+      usermod -aG docker vagrant
     fi
     if ! which cabal; then
       pushd /host/project
