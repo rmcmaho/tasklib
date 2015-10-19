@@ -1,6 +1,8 @@
 module Main where
 
 import Lib
+import FRP.Netwire
 
 main :: IO ()
-main = someFunc
+main = testWire clockSession_ Lib.sqrIntegral
+
