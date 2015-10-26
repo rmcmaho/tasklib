@@ -27,6 +27,7 @@ executable tasklib-exe
   build-depends:       base
                      , tasklib
                      , netwire
+                     , transformers
   default-language:    Haskell2010
 
 test-suite tasklib-test
