@@ -6,10 +6,12 @@ import Control.Wire
 
 main :: IO ()
 main = do
-  (st, session') <- stepSession clockSession_
-  (wt', wire') <- return $ runProcess session' 0
+  (wt', wire') <- return runIntProcess
   print wt'
   return ()
+
+runIntProcess :: (Either Int Int, Wire () Int Identity Int Int) 
+runIntProcess = runProcess () 0
 
 runProcess :: s -> Int -> (Either Int Int, Wire s Int Identity Int Int) 
 runProcess session initial = runProcess_ process session $ Right initial
